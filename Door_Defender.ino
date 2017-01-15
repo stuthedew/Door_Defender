@@ -60,9 +60,7 @@ void loop(){    //  Poll sensor. Fire Squirt gun if triggerd two times in a row.
             delay(sampleDelay);
 
         }
-        else{
-            led.off();  // First sensor trigger likely error. Reset
-        }
+            led.off();
     }
 
     delay(sampleDelay);
