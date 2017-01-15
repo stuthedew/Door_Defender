@@ -9,7 +9,7 @@ Led led(4); //Led pin
 Sensor sensor(5, 6, 8); // Trigger and Echo Pin and minimum trigger delta distance (cm).
 
 const int shotLength_ms = 500;
-Gun gun(12, shotLength_ms);
+Gun gun(9, shotLength_ms);
 
 const int sampleDelay = 750;
 const int coolDownDelay = 5000;
@@ -21,6 +21,7 @@ const int ledIntensity = 50;
 void setup(){
     led.begin();
     sensor.begin();
+    gun.begin();
     led.on(BLUE, ledIntensity);
     sensor.calibrate();
     led.on(GREEN, ledIntensity);
