@@ -5,18 +5,24 @@
 
 using namespace doorDefender;
 
-Led led(4); //Led pin
-Sensor sensor(5, 6, 8); // Trigger and Echo Pin and minimum trigger delta distance (cm).
+const int ledPin = 4;
 
-const int shotLength_ms = 500;
-Gun gun(9, shotLength_ms);
+//Ping sensor pins
+const int triggerPin = 5;
+const int echoPin = 5;
+
+const int gunPin = 9;
+
+const int ledIntensity = 30;
+Led led(ledPin);
+
+Sensor sensor(triggerPin, echoPin, 8); // Trigger and Echo Pin and minimum trigger delta distance (cm).
+
+const int shotLength_ms = 500;  // Time squirtgun is on in ms
+Gun gun(gunPin, shotLength_ms);
 
 const int sampleDelay = 750;
 const int coolDownDelay = 5000;
-
-
-const int ledIntensity = 50;
-
 
 void setup(){
     led.begin();
@@ -44,7 +50,7 @@ void loop(){    //  Poll sensor. Fire Squirt gun if triggerd two times in a row.
             gun.shoot();
 
             led.off();
-            
+
             delay(coolDownDelay);
 
             led.on(BLUE, ledIntensity);
@@ -60,5 +66,4 @@ void loop(){    //  Poll sensor. Fire Squirt gun if triggerd two times in a row.
     }
 
     delay(sampleDelay);
-
 }
