@@ -1,18 +1,72 @@
+
+#include "defenderLED.h"
+#include "defenderSensor.h"
+#include "defenderGun.h"
+
+using namespace doorDefender;
+
+Led led(4); //Led pin
+Sensor sensor(5, 6, 8); // Trigger and Echo Pin and minimum trigger delta distance (cm).
+
+const int shotLength_ms = 500;
+Gun gun(12, shotLength_ms);
+
+const int sampleDelay = 750;
+const int coolDownDelay = 5000;
+
+
+const int ledIntensity = 50;
+
+
+void setup(){
+    led.begin();
+    sensor.begin();
+    led.on(BLUE, ledIntensity);
+    sensor.calibrate();
+    led.on(GREEN, ledIntensity);
+    delay(1000);
+    led.off();
+}
+
+void loop(){
+    if(sensor.checkTrigger()){
+        led.on(YELLOW, ledIntensity);
+        delay(sampleDelay);
+        if(sensor.checkTrigger()){
+            led.on(RED, ledIntensity);
+            gun.shoot();
+            led.off();
+            delay(coolDownDelay);
+
+            led.on(BLUE, ledIntensity);
+            sensor.calibrate(); // Recalibrate incase sensor moved.
+            led.on(GREEN, ledIntensity);
+            delay(sampleDelay);
+
+        }
+    }
+    led.off();
+    delay(sampleDelay);
+
+}
+
+/*
 const int gunDelay = 500;
 const int trigDelay = 1000;
 
 const int gunPin = 2;
 const int trigPin = 7;
 const int readPin = 8;
-const int ledPin = 13;
+//const int ledPin = 13;
 
 const int distBuffer = 5;
 
 int calDistance;
 
+
 void setup() {
-  pinMode(gunPin, OUTPUT);
-  pinMode(ledPin, OUTPUT);
+  //pinMode(gunPin, OUTPUT);
+  //pinMode(ledPin, OUTPUT);
   digitalWrite(gunPin, HIGH);
   Serial.begin(115200);
   pinMode(trigPin, OUTPUT);
@@ -43,16 +97,16 @@ void loop() {
   }
   Serial.println();
   delay(trigDelay);
- 
+
 }
 
 void fire(){
   Serial.println(F("FIRE!!!!"));
   digitalWrite(gunPin, LOW);
-  digitalWrite(ledPin, HIGH);
+  //digitalWrite(ledPin, HIGH);
   delay(gunDelay);
   digitalWrite(gunPin, HIGH);
-  digitalWrite(ledPin, LOW);
+  //digitalWrite(ledPin, LOW);
 }
 long duration;
 int getDistance(){
@@ -80,4 +134,4 @@ bool triggered(int dist){
   }
   return false;
 }
-
+*/
